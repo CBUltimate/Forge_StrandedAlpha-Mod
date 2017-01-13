@@ -1,3 +1,9 @@
 
 #Creative Tab
 itemGroup.stranded_mod=Stranded Mod
+
+#Items
+item.reinforced_iron.name=Reinforced Iron
+
+#Block
+item.reinforced_iron_block.name=Reinforced Iron Block
