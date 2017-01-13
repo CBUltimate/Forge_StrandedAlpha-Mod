@@ -27,11 +27,11 @@ public class StrandedMod {
     @Mod.Instance
     public static StrandedMod instance;
 
-    public static InvCreativeTab inCreativeTab;
+    public static InvCreativeTab invCreativeTab;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        inCreativeTab = new InvCreativeTab(CreativeTabs.getNextID(), "stranded mod");
+        invCreativeTab = new InvCreativeTab(CreativeTabs.getNextID(), "stranded_mod");
         proxy.preInit(event);
     }
 

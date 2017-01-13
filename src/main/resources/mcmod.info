@@ -1,15 +1,15 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "cbu_strandedmod",
+  "name": "Stranded Mod",
+  "description": "Source: https://github.com/CBUltimate/Forge_StrandedAlpha-Mod",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
-  "logoFile": "",
+  "authorList": ["CBUltimate"],
+  "credits": "The Forge and FML guys, for making forge.",
+  "logoFile": "https://github.com/CBUltimate/Forge_StrandedAlpha-Mod.git",
   "screenshots": [],
   "dependencies": []
 }
