@@ -1,6 +1,7 @@
 package com.cbultimate.stranded;
 
-import net.minecraft.init.Blocks;
+import com.cbultimate.stranded.inv_tab.InvCreativeTab;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -26,8 +27,11 @@ public class StrandedMod {
     @Mod.Instance
     public static StrandedMod instance;
 
+    public static InvCreativeTab inCreativeTab;
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        inCreativeTab = new InvCreativeTab(CreativeTabs.getNextID(), "stranded mod");
         proxy.preInit(event);
     }
 
