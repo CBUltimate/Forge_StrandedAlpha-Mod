@@ -13,19 +13,23 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 public class ModItems {
 
     public static Item reinforcedIronBar;
+    public static Item reinforcedDirt;
 
     public static void preInit() {
 
         reinforcedIronBar = new ItemReinforcedIronBar("reinforced_iron_bar");
+        reinforcedDirt = new ItemReinforcedDirt("mud_brick");
         registerItems();
     }
 
     public static void registerItems() {
         GameRegistry.register(reinforcedIronBar, new ResourceLocation(StrandedMod.MODID, "reinforced_iron_bar"));
+        GameRegistry.register(reinforcedDirt, new ResourceLocation(StrandedMod.MODID, "mud_brick"));
     }
 
     public static void registerRenders(){
         registerRender(reinforcedIronBar);
+        registerRender(reinforcedDirt);
     }
 
     public static void registerRender(Item item) {

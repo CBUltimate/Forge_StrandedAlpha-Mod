@@ -1,6 +1,6 @@
 {
     "parent":"block/cube_all",
-    "texture":{
+    "textures":{
         "all":"cbu_strandedmod:blocks/reinforced_iron_block"
     }
 }

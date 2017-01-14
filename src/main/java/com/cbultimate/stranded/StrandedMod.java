@@ -1,9 +1,11 @@
 package com.cbultimate.stranded;
 
 import com.cbultimate.stranded.block.ModBlocks;
+import com.cbultimate.stranded.crafting.ModCrafting;
 import com.cbultimate.stranded.inv_tab.InvCreativeTab;
 import com.cbultimate.stranded.item.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -44,10 +46,13 @@ public class StrandedMod {
         proxy.init(event);
         System.out.println(LOGPREFIX+ " Loading mod version: "+VERSION);
         System.out.println(LOGPREFIX+ " Mod made by CBUltimate.");
+        ModCrafting.Init();
+        ModBlocks.Init();
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.register(new StrandedModEventHandler());
         proxy.postInit(event);
     }
 }

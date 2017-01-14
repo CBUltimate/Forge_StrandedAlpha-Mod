@@ -9,16 +9,13 @@ import net.minecraft.block.material.Material;
  * Created by CBU on 14/1/2017.
  */
 
-public class Block_ReinforcedIron extends Block {
+public class BlockReinforcedDirt extends Block {
 
-    public Block_ReinforcedIron(Material materialIn, String name) {
+    public BlockReinforcedDirt(Material materialIn, String name) {
         super(materialIn);
         this.setUnlocalizedName(name);
         this.setCreativeTab(StrandedMod.invCreativeTab);
-        this.setHardness(200F);
-        this.setResistance(1000F);
-        this.setSoundType(SoundType.METAL);
+        this.setResistance(200F);
+        this.setSoundType(SoundType.STONE);
     }
-
-
 }

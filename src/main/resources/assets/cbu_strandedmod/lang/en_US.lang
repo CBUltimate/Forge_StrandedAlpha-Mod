@@ -1,0 +1,19 @@
+
+#Creative Tab
+itemGroup.stranded_mod=Stranded Mod
+
+#Items
+item.ingotIron.name=Iron Bar
+item.ingotGold.name=Gold Bar
+item.reinforced_iron_bar.name=Reinforced Iron Bar
+item.mud_brick.name=Mud Brick
+
+#Block
+tile.workbench.name=Workbench
+tile.blockGold.name=Shiny Block of Gold
+tile.blockIron.name=Shiny Block of Iron
+tile.blockEmerald.name=Shiny Block of Emerald
+tile.blockDiamond.name=Shiny Block of Diamond
+tile.reinforced_iron_block.name=Reinforced Iron Block
+tile.mud_brick_block.name=Mud Brick Block
+tile.wooden_toolcupboard.name=Wooden Tool Cupboard
