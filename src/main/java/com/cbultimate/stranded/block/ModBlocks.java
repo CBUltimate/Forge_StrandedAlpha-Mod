@@ -1,14 +1,14 @@
 package com.cbultimate.stranded.block;
 
-import com.cbultimate.stranded.StrandedMod;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.client.Minecraft;
+import com.cbultimate.stranded.StrandedMod;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.block.material.Material;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 
 /**
  * Created by CBU on 14/1/2017.

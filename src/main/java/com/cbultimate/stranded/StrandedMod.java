@@ -35,13 +35,14 @@ public class StrandedMod {
     public void preInit(FMLPreInitializationEvent event) {
         invCreativeTab = new InvCreativeTab(CreativeTabs.getNextID(), "stranded_mod");
         ModBlocks.preInit();
+        ModItems.preInit();
         proxy.preInit(event);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
         proxy.init(event);
-        System.out.println(LOGPREFIX+ " Loading mod version:"+VERSION);
+        System.out.println(LOGPREFIX+ " Loading mod version: "+VERSION);
         System.out.println(LOGPREFIX+ " Mod made by CBUltimate.");
     }
 

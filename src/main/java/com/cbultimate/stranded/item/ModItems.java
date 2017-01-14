@@ -1,30 +1,31 @@
 package com.cbultimate.stranded.item;
 
-import com.cbultimate.stranded.StrandedMod;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
+import com.cbultimate.stranded.StrandedMod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 
 /**
  * Created by CBU on 14/1/2017.
  */
 public class ModItems {
 
-    public static Item reinforcedIronItem;
+    public static Item reinforcedIronBar;
 
     public static void preInit() {
 
+        reinforcedIronBar = new ItemReinforcedIronBar("reinforced_iron_bar");
         registerItems();
     }
 
     public static void registerItems() {
-        GameRegistry.register(reinforcedIronItem, new ResourceLocation(StrandedMod.MODID, "reinforced_iron"));
+        GameRegistry.register(reinforcedIronBar, new ResourceLocation(StrandedMod.MODID, "reinforced_iron_bar"));
     }
 
     public static void registerRenders(){
-        registerRender(reinforcedIronItem);
+        registerRender(reinforcedIronBar);
     }
 
     public static void registerRender(Item item) {

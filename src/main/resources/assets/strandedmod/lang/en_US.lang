@@ -3,7 +3,7 @@
 itemGroup.stranded_mod=Stranded Mod
 
 #Items
-item.reinforced_iron.name=Reinforced Iron
+item.reinforced_iron_bar.name=Reinforced Iron Bar
 
 #Block
-item.reinforced_iron_block.name=Reinforced Iron Block
+tile.reinforced_iron_block.name=Reinforced Iron Block
