@@ -1,9 +1,9 @@
-package com.cbultimate.stranded.item;
+package mod.cbultimate.stranded.item;
 
 import net.minecraft.item.Item;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
-import com.cbultimate.stranded.StrandedMod;
+import mod.cbultimate.stranded.StrandedMod;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 

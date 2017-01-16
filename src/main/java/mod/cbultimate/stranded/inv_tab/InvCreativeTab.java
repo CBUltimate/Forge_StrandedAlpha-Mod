@@ -1,4 +1,4 @@
-package com.cbultimate.stranded.inv_tab;
+package mod.cbultimate.stranded.inv_tab;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;

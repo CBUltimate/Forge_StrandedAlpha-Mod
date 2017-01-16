@@ -1,11 +1,11 @@
-package com.cbultimate.stranded.block;
+package mod.cbultimate.stranded.block;
 
+import mod.cbultimate.stranded.StrandedMod;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.client.Minecraft;
-import com.cbultimate.stranded.StrandedMod;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fml.common.registry.GameRegistry;

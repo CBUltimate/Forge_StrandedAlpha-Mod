@@ -1,6 +1,6 @@
-package com.cbultimate.stranded.item;
+package mod.cbultimate.stranded.item;
 
-import com.cbultimate.stranded.StrandedMod;
+import mod.cbultimate.stranded.StrandedMod;
 import net.minecraft.item.Item;
 
 /**

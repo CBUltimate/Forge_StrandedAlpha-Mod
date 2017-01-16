@@ -1,9 +1,10 @@
-package com.cbultimate.stranded;
+package mod.cbultimate.stranded;
 
-import com.cbultimate.stranded.block.ModBlocks;
-import com.cbultimate.stranded.crafting.ModCrafting;
-import com.cbultimate.stranded.inv_tab.InvCreativeTab;
-import com.cbultimate.stranded.item.ModItems;
+import mod.cbultimate.stranded.block.ModBlocks;
+import mod.cbultimate.stranded.crafting.ModCrafting;
+import mod.cbultimate.stranded.inv_tab.InvCreativeTab;
+import mod.cbultimate.stranded.item.ModItems;
+import mod.cbultimate.stranded.tileentity.ModTileEntities;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -12,7 +13,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import com.cbultimate.stranded.proxy.CommonProxy;
+import mod.cbultimate.stranded.proxy.CommonProxy;
 
 /**
  * Created by CBU on 13/1/2017.
@@ -25,7 +26,7 @@ public class StrandedMod {
     public static final String MODNAME = "Stranded Mod";
     private static final String LOGPREFIX = "["+MODNAME+"] >> ";
 
-    @SidedProxy(clientSide = "com.cbultimate.stranded.proxy.ClientProxy", serverSide = "com.cbultimate.stranded.proxy.CommonProxy")
+    @SidedProxy(clientSide = "ClientProxy", serverSide = "CommonProxy")
     public static CommonProxy proxy;
 
     @Mod.Instance
@@ -48,11 +49,13 @@ public class StrandedMod {
         System.out.println(LOGPREFIX+ " Mod made by CBUltimate.");
         ModCrafting.Init();
         ModBlocks.Init();
+        ModTileEntities.Init();
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new StrandedModEventHandler());
+        MinecraftForge.EVENT_BUS.register(new ModEventHandler());
         proxy.postInit(event);
     }
+
 }

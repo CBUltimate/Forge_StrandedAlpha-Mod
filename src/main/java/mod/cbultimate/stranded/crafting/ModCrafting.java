@@ -1,7 +1,7 @@
-package com.cbultimate.stranded.crafting;
+package mod.cbultimate.stranded.crafting;
 
-import com.cbultimate.stranded.block.ModBlocks;
-import com.cbultimate.stranded.item.ModItems;
+import mod.cbultimate.stranded.block.ModBlocks;
+import mod.cbultimate.stranded.item.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -17,5 +17,7 @@ public class ModCrafting {
 
         GameRegistry.addShapedRecipe(new ItemStack(ModBlocks.reinforcedDirtBlock, 4), new Object[] {"##", "##", '#', ModItems.reinforcedDirt});
         GameRegistry.addShapedRecipe(new ItemStack(ModBlocks.reinforcedIronBlock, 4), new Object[] {"##", "##", '#', ModItems.reinforcedIronBar});
+        GameRegistry.addShapedRecipe(new ItemStack(ModBlocks.woodenToolCupboard, 1), new Object[] {"###", "###", "###", '#', Blocks.LOG});
+        GameRegistry.addShapedRecipe(new ItemStack(ModBlocks.woodenToolCupboard, 1), new Object[] {"###", "###", "###", '#', Blocks.LOG2});
     }
 }
