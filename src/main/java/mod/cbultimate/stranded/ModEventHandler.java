@@ -42,8 +42,6 @@ public class ModEventHandler {
 
         blacklistedItems.add(Items.LAVA_BUCKET);
         blacklistedItems.add(Items.WATER_BUCKET);
-        blacklistedItems.add(new ItemStack(Blocks.FLOWING_LAVA).getItem());
-        blacklistedItems.add(new ItemStack(Blocks.FLOWING_WATER).getItem());
         blacklistedItems.add(new ItemStack(Blocks.CHEST).getItem());
         blacklistedItems.add(new ItemStack(Blocks.TRAPPED_CHEST).getItem());
     }
@@ -91,10 +89,9 @@ public class ModEventHandler {
                         boolean authorized = ((TileEntityToolCupboard) cupboardEntity).checkAuthorized(event.getPlayer().getName());
                         if (!authorized){
                             cancelPlacement = true;
-                            event.setCanceled(true);
                             event.setResult(Event.Result.DENY);
+                            event.setCanceled(true);
                             event.getPlayer().addChatMessage(new TextComponentString("You are not authorized to build here."));
-                            System.out.println("Canceled event.");
                         }
                     }
                 }
@@ -133,7 +130,7 @@ public class ModEventHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event){
+    public void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty event){
         if (!event.getWorld().isRemote){
             String targetName = "";
 
@@ -146,7 +143,7 @@ public class ModEventHandler {
 
             for (int q=0; q<blacklistedItems.size(); q++){
                 if (event.getItemStack().getItem() == blacklistedItems.get(q)){
-                    targetName = blacklistedItems.get(q).getUnlocalizedName();
+                    targetName = event.getItemStack().getDisplayName();
                     break;
                 }
             }
@@ -166,10 +163,94 @@ public class ModEventHandler {
 
                         if (cupboardEntity instanceof TileEntityToolCupboard){
                             if (!((TileEntityToolCupboard) cupboardEntity).checkAuthorized(event.getEntityPlayer().getName()) ){
-                                event.setResult(Event.Result.DENY);
+                                event.setCanceled(true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event){
+        if (!event.getWorld().isRemote){
+            String targetName = "";
+
+            for (int p=0; p<protectedBlockList.size(); p++){
+                if (event.getWorld().getBlockState(event.getPos()).getBlock() == protectedBlockList.get(p)){
+                    targetName = protectedBlockList.get(p).getLocalizedName();
+                    break;
+                }
+            }
+
+            for (int q=0; q<blacklistedItems.size(); q++){
+                if (event.getItemStack().getItem() == blacklistedItems.get(q)){
+                    targetName = event.getItemStack().getDisplayName();
+                    break;
+                }
+            }
+
+            if (!targetName.equals("")){
+                World world = event.getWorld();
+                ModWorldSavedData modWorldSavedData = (ModWorldSavedData) world.getPerWorldStorage().getOrLoadData(ModWorldSavedData.class, cupboard_dataIdentifier);
+
+                if (modWorldSavedData == null) {
+                    modWorldSavedData = new ModWorldSavedData(cupboard_dataIdentifier);
+                }
+
+                for (int i=0; i < modWorldSavedData.ToolCupboards.size(); i ++){
+                    BlockPos currentPosition = modWorldSavedData.ToolCupboards.get(i);
+                    if (event.getPos().getDistance(currentPosition.getX(), currentPosition.getY(), currentPosition.getZ()) < 16){
+                        TileEntity cupboardEntity = world.getTileEntity(currentPosition);
+
+                        if (cupboardEntity instanceof TileEntityToolCupboard){
+                            if (!((TileEntityToolCupboard) cupboardEntity).checkAuthorized(event.getEntityPlayer().getName()) ){
+                                event.setCanceled(true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event){
+        if (!event.getWorld().isRemote){
+            String targetName = "";
+
+            for (int p=0; p<protectedBlockList.size(); p++){
+                if (event.getWorld().getBlockState(event.getPos()).getBlock() == protectedBlockList.get(p)){
+                    targetName = protectedBlockList.get(p).getLocalizedName();
+                    break;
+                }
+            }
+
+            for (int q=0; q<blacklistedItems.size(); q++){
+                if (event.getItemStack().getItem() == blacklistedItems.get(q)){
+                    targetName = event.getItemStack().getDisplayName();
+                    break;
+                }
+            }
+
+            if (!targetName.equals("")){
+                World world = event.getWorld();
+                ModWorldSavedData modWorldSavedData = (ModWorldSavedData) world.getPerWorldStorage().getOrLoadData(ModWorldSavedData.class, cupboard_dataIdentifier);
+
+                if (modWorldSavedData == null) {
+                    modWorldSavedData = new ModWorldSavedData(cupboard_dataIdentifier);
+                }
+
+                for (int i=0; i < modWorldSavedData.ToolCupboards.size(); i ++){
+                    BlockPos currentPosition = modWorldSavedData.ToolCupboards.get(i);
+                    if (event.getPos().getDistance(currentPosition.getX(), currentPosition.getY(), currentPosition.getZ()) < 16){
+                        TileEntity cupboardEntity = world.getTileEntity(currentPosition);
+
+                        if (cupboardEntity instanceof TileEntityToolCupboard){
+                            if (!((TileEntityToolCupboard) cupboardEntity).checkAuthorized(event.getEntityPlayer().getName()) ){
                                 event.setCanceled(true);
                                 event.getEntityPlayer().addChatMessage(new TextComponentString("You are not authorized to use " + targetName));
-                                System.out.println("Canceled event.");
                             }
                         }
                     }
