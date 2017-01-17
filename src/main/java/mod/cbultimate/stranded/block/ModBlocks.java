@@ -29,8 +29,8 @@ public class ModBlocks {
 
 
     public static void Init() {
-        float woodenDoorHardness = 5.0F;
-        float ironDoorHardness = 40.0F;
+        float woodenDoorHardness = 10.0F;
+        float ironDoorHardness = 180.0F;
 
         Blocks.OAK_DOOR.setHardness(woodenDoorHardness);
         Blocks.ACACIA_DOOR.setHardness(woodenDoorHardness);
@@ -45,14 +45,17 @@ public class ModBlocks {
 
         Blocks.PLANKS.setHardness(10.0F);
 
-        Blocks.DIAMOND_BLOCK.setHardness(10.0F);
-        Blocks.GOLD_BLOCK.setHardness(20.0F);
-        Blocks.STONEBRICK.setHardness(30.0F);
-        Blocks.BRICK_BLOCK.setHardness(40.0F);
-        Blocks.IRON_BLOCK.setHardness(50.0F);
+        Blocks.DIAMOND_BLOCK.setHardness(50.0F);
+        Blocks.GOLD_BLOCK.setHardness(25.0F);
+        Blocks.STONEBRICK.setHardness(75.0F);
+        Blocks.BRICK_BLOCK.setHardness(100.0F);
+        Blocks.IRON_BLOCK.setHardness(150.0F);
 
-        reinforcedDirtBlock.setHardness(15.0F);
-        reinforcedIronBlock.setHardness(60.0F);
+        reinforcedDirtBlock.setHardness(50.0F);
+        reinforcedIronBlock.setHardness(200.0F);
+
+        reinforcedDirtBlock.setResistance(30.0F);
+        reinforcedIronBlock.setResistance(50.0F);
     }
 
     public static void registerBlocks() {

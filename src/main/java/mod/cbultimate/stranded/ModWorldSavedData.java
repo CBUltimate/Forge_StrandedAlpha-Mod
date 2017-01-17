@@ -2,13 +2,14 @@ package mod.cbultimate.stranded;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldSavedData;
 import java.util.ArrayList;
 
 //Created by CBU on 17/1/2017.
 
 public class ModWorldSavedData extends WorldSavedData {
-    public ArrayList<Vector3> ToolCupboards = new ArrayList<Vector3>();
+    public ArrayList<BlockPos> ToolCupboards = new ArrayList<BlockPos>();
 
     public ModWorldSavedData(String name) {
         super(name);
@@ -23,7 +24,7 @@ public class ModWorldSavedData extends WorldSavedData {
             int X = newCompound.getInteger("x");
             int Y = newCompound.getInteger("y");
             int Z = newCompound.getInteger("z");
-            ToolCupboards.add(new Vector3(X, Y, Z));
+            ToolCupboards.add(new BlockPos(X, Y, Z));
         }
         System.out.println("Loaded " + ToolCupboards.size() + " cupboards.");
     }
@@ -33,10 +34,10 @@ public class ModWorldSavedData extends WorldSavedData {
         NBTTagList cupboardList = new NBTTagList();
         for (int i=0;i<ToolCupboards.size(); i++){
             NBTTagCompound newCompound = new NBTTagCompound();
-            Vector3 position = ToolCupboards.get(i);
-            newCompound.setInteger("x", position.x);
-            newCompound.setInteger("y", position.y);
-            newCompound.setInteger("z", position.z);
+            BlockPos position = ToolCupboards.get(i);
+            newCompound.setInteger("x", position.getX());
+            newCompound.setInteger("y", position.getY());
+            newCompound.setInteger("z", position.getZ());
             cupboardList.appendTag(newCompound);
         }
         compound.setTag("ToolCupboards", cupboardList);

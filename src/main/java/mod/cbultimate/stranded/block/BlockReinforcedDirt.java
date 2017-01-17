@@ -15,7 +15,6 @@ public class BlockReinforcedDirt extends Block {
         super(materialIn);
         this.setUnlocalizedName(name);
         this.setCreativeTab(StrandedMod.invCreativeTab);
-        this.setResistance(200F);
         this.setSoundType(SoundType.STONE);
     }
 }

@@ -15,7 +15,6 @@ public class BlockReinforcedIron extends Block {
         super(materialIn);
         this.setUnlocalizedName(name);
         this.setCreativeTab(StrandedMod.invCreativeTab);
-        this.setResistance(10000F);
         this.setSoundType(SoundType.METAL);
     }
 }
