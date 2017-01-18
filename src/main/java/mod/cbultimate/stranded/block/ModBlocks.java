@@ -51,6 +51,9 @@ public class ModBlocks {
         Blocks.BRICK_BLOCK.setHardness(100.0F);
         Blocks.IRON_BLOCK.setHardness(150.0F);
 
+        Blocks.BED.setHardness(50.0F);
+        Blocks.BED.setResistance(30.0F);
+
         reinforcedDirtBlock.setHardness(50.0F);
         reinforcedIronBlock.setHardness(200.0F);
 

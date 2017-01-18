@@ -4,6 +4,7 @@ import mod.cbultimate.stranded.block.ModBlocks;
 import mod.cbultimate.stranded.crafting.ModCrafting;
 import mod.cbultimate.stranded.inv_tab.InvCreativeTab;
 import mod.cbultimate.stranded.item.ModItems;
+import mod.cbultimate.stranded.network.ModNetworkHandler;
 import mod.cbultimate.stranded.proxy.CommonProxy;
 import mod.cbultimate.stranded.tileentity.ModTileEntities;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,7 +25,7 @@ public class StrandedMod {
     public static final String MODID = "cbu_strandedmod";
     public static final String VERSION = "1.0";
     public static final String MODNAME = "Stranded Mod";
-    private static final String LOGPREFIX = "["+MODNAME+"] >> ";
+    public static final String LOGPREFIX = "["+MODNAME+"] >> ";
 
     @SidedProxy(clientSide = "mod.cbultimate.stranded.proxy.ClientProxy", serverSide = "mod.cbultimate.stranded.proxy.CommonProxy")
     public static CommonProxy proxy;
@@ -39,6 +40,7 @@ public class StrandedMod {
         invCreativeTab = new InvCreativeTab(CreativeTabs.getNextID(), "stranded_mod");
         ModBlocks.preInit();
         ModItems.preInit();
+        ModNetworkHandler.init();
         proxy.preInit(event);
     }
 

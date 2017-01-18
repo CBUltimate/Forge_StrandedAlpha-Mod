@@ -3,14 +3,17 @@ package mod.cbultimate.stranded;
 import mod.cbultimate.stranded.block.ModBlocks;
 import mod.cbultimate.stranded.tileentity.TileEntityToolCupboard;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -54,12 +57,15 @@ public class ModEventHandler {
         if (modWorldSavedData == null) {
             modWorldSavedData = new ModWorldSavedData(cupboard_dataIdentifier);
         }
+
         for (int i=0; i < modWorldSavedData.ToolCupboards.size(); i ++){
-            BlockPos currentPosition = modWorldSavedData.ToolCupboards.get(i);
-            if (world.isAirBlock(currentPosition) || world.getBlockState(currentPosition).getBlock() != ModBlocks.woodenToolCupboard){
+            BlockPos toolPos = modWorldSavedData.ToolCupboards.get(i);
+            if (world.isAirBlock(toolPos) || world.getBlockState(toolPos).getBlock() != ModBlocks.woodenToolCupboard){
+                System.out.println(StrandedMod.LOGPREFIX + "Missing tool cupboard.");
                 modWorldSavedData.ToolCupboards.remove(i);
             }
         }
+
         modWorldSavedData.markDirty();
     }
 
@@ -77,7 +83,7 @@ public class ModEventHandler {
         for (int i=0; i < modWorldSavedData.ToolCupboards.size(); i ++){
             BlockPos currentPosition = modWorldSavedData.ToolCupboards.get(i);
             if (event.getPos().getDistance(currentPosition.getX(), currentPosition.getY(), currentPosition.getZ()) < 16){
-                if (event.getPlacedBlock().getBlock() == ModBlocks.woodenToolCupboard) {
+                if (event.getPlacedBlock().getBlock().equals(ModBlocks.woodenToolCupboard)) {
                     cancelPlacement = true;
                     event.setCanceled(true);
                     event.getPlayer().addChatMessage(new TextComponentString("There is already a tool cupboard in this region."));
@@ -98,9 +104,9 @@ public class ModEventHandler {
             }
         }
 
-        if (event.getPlacedBlock().getBlock() == ModBlocks.woodenToolCupboard){
+        if (event.getPlacedBlock().getBlock().equals(ModBlocks.woodenToolCupboard)){
             if (!cancelPlacement){
-                modWorldSavedData.ToolCupboards.add(new BlockPos(event.getPos().getX(), event.getPos().getY(), event.getPos().getZ()));
+                modWorldSavedData.ToolCupboards.add(event.getPos());
                 world.getPerWorldStorage().setData(cupboard_dataIdentifier, modWorldSavedData);
                 modWorldSavedData.markDirty();
             }
@@ -108,7 +114,7 @@ public class ModEventHandler {
     }
 
     @SubscribeEvent
-    public void blockBreakEvent(BlockEvent.BreakEvent event){
+    public void onBlockBreak(BlockEvent.BreakEvent event){
         World world = event.getWorld();
         ModWorldSavedData modWorldSavedData = (ModWorldSavedData) world.getPerWorldStorage().getOrLoadData(ModWorldSavedData.class, cupboard_dataIdentifier);
 
@@ -116,10 +122,10 @@ public class ModEventHandler {
             modWorldSavedData = new ModWorldSavedData(cupboard_dataIdentifier);
         }
 
-        if (event.getState().getBlock() == ModBlocks.woodenToolCupboard ){
-            for(int i=0; i<modWorldSavedData.ToolCupboards.size(); i++){
+        for(int i=0; i<modWorldSavedData.ToolCupboards.size(); i++){
+            if (event.getState().getBlock().equals(ModBlocks.woodenToolCupboard)){
                 BlockPos currentCupboard = modWorldSavedData.ToolCupboards.get(i);
-                if (event.getPos().getX() == currentCupboard.getX() && event.getPos().getY() == currentCupboard.getY() && event.getPos().getZ() == currentCupboard.getZ()){
+                if (event.getPos().equals(currentCupboard)){
                     modWorldSavedData.ToolCupboards.remove(i);
                     world.getPerWorldStorage().setData(cupboard_dataIdentifier, modWorldSavedData);
                     modWorldSavedData.markDirty();
@@ -130,84 +136,39 @@ public class ModEventHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerRightClickEmpty(PlayerInteractEvent.RightClickEmpty event){
-        if (!event.getWorld().isRemote){
-            String targetName = "";
+    public void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event){
+        String targetName = "";
 
-            for (int p=0; p<protectedBlockList.size(); p++){
-                if (event.getWorld().getBlockState(event.getPos()).getBlock() == protectedBlockList.get(p)){
-                    targetName = protectedBlockList.get(p).getLocalizedName();
-                    break;
-                }
-            }
-
-            for (int q=0; q<blacklistedItems.size(); q++){
-                if (event.getItemStack().getItem() == blacklistedItems.get(q)){
-                    targetName = event.getItemStack().getDisplayName();
-                    break;
-                }
-            }
-
-            if (!targetName.equals("")){
-                World world = event.getWorld();
-                ModWorldSavedData modWorldSavedData = (ModWorldSavedData) world.getPerWorldStorage().getOrLoadData(ModWorldSavedData.class, cupboard_dataIdentifier);
-
-                if (modWorldSavedData == null) {
-                    modWorldSavedData = new ModWorldSavedData(cupboard_dataIdentifier);
-                }
-
-                for (int i=0; i < modWorldSavedData.ToolCupboards.size(); i ++){
-                    BlockPos currentPosition = modWorldSavedData.ToolCupboards.get(i);
-                    if (event.getPos().getDistance(currentPosition.getX(), currentPosition.getY(), currentPosition.getZ()) < 16){
-                        TileEntity cupboardEntity = world.getTileEntity(currentPosition);
-
-                        if (cupboardEntity instanceof TileEntityToolCupboard){
-                            if (!((TileEntityToolCupboard) cupboardEntity).checkAuthorized(event.getEntityPlayer().getName()) ){
-                                event.setCanceled(true);
-                            }
-                        }
-                    }
-                }
+        for (int p=0; p<protectedBlockList.size(); p++){
+            if (event.getWorld().getBlockState(event.getPos()).getBlock().equals(protectedBlockList.get(p))){
+                targetName = protectedBlockList.get(p).getLocalizedName();
+                break;
             }
         }
-    }
 
-    @SubscribeEvent
-    public void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event){
-        if (!event.getWorld().isRemote){
-            String targetName = "";
+        for (int q=0; q<blacklistedItems.size(); q++){
+            if (event.getItemStack().getItem().equals(blacklistedItems.get(q))){
+                targetName = event.getItemStack().getDisplayName();
+                break;
+            }
+        }
 
-            for (int p=0; p<protectedBlockList.size(); p++){
-                if (event.getWorld().getBlockState(event.getPos()).getBlock() == protectedBlockList.get(p)){
-                    targetName = protectedBlockList.get(p).getLocalizedName();
-                    break;
-                }
+        if (!targetName.equals("")){
+            World world = event.getWorld();
+            ModWorldSavedData modWorldSavedData = (ModWorldSavedData) world.getPerWorldStorage().getOrLoadData(ModWorldSavedData.class, cupboard_dataIdentifier);
+
+            if (modWorldSavedData == null) {
+                modWorldSavedData = new ModWorldSavedData(cupboard_dataIdentifier);
             }
 
-            for (int q=0; q<blacklistedItems.size(); q++){
-                if (event.getItemStack().getItem() == blacklistedItems.get(q)){
-                    targetName = event.getItemStack().getDisplayName();
-                    break;
-                }
-            }
+            for (int i=0; i < modWorldSavedData.ToolCupboards.size(); i ++){
+                BlockPos currentPosition = modWorldSavedData.ToolCupboards.get(i);
+                if (event.getPos().getDistance(currentPosition.getX(), currentPosition.getY(), currentPosition.getZ()) < 16){
+                    TileEntity cupboardEntity = world.getTileEntity(currentPosition);
 
-            if (!targetName.equals("")){
-                World world = event.getWorld();
-                ModWorldSavedData modWorldSavedData = (ModWorldSavedData) world.getPerWorldStorage().getOrLoadData(ModWorldSavedData.class, cupboard_dataIdentifier);
-
-                if (modWorldSavedData == null) {
-                    modWorldSavedData = new ModWorldSavedData(cupboard_dataIdentifier);
-                }
-
-                for (int i=0; i < modWorldSavedData.ToolCupboards.size(); i ++){
-                    BlockPos currentPosition = modWorldSavedData.ToolCupboards.get(i);
-                    if (event.getPos().getDistance(currentPosition.getX(), currentPosition.getY(), currentPosition.getZ()) < 16){
-                        TileEntity cupboardEntity = world.getTileEntity(currentPosition);
-
-                        if (cupboardEntity instanceof TileEntityToolCupboard){
-                            if (!((TileEntityToolCupboard) cupboardEntity).checkAuthorized(event.getEntityPlayer().getName()) ){
-                                event.setCanceled(true);
-                            }
+                    if (cupboardEntity instanceof TileEntityToolCupboard){
+                        if (!((TileEntityToolCupboard) cupboardEntity).checkAuthorized(event.getEntityPlayer().getName()) ){
+                            event.setCanceled(true);
                         }
                     }
                 }
@@ -217,45 +178,50 @@ public class ModEventHandler {
 
     @SubscribeEvent
     public void onPlayerRightClickBlock(PlayerInteractEvent.RightClickBlock event){
-        if (!event.getWorld().isRemote){
-            String targetName = "";
+        String targetName = "";
 
-            for (int p=0; p<protectedBlockList.size(); p++){
-                if (event.getWorld().getBlockState(event.getPos()).getBlock() == protectedBlockList.get(p)){
-                    targetName = protectedBlockList.get(p).getLocalizedName();
-                    break;
-                }
+        for (int p = 0; p < protectedBlockList.size(); p++) {
+            if (event.getWorld().getBlockState(event.getPos()).getBlock().equals(protectedBlockList.get(p))) {
+                targetName = protectedBlockList.get(p).getLocalizedName();
+                break;
+            }
+        }
+
+        for (int q = 0; q < blacklistedItems.size(); q++) {
+            if (event.getItemStack().getItem().equals(blacklistedItems.get(q))) {
+                targetName = event.getItemStack().getDisplayName();
+                break;
+            }
+        }
+
+        if (!targetName.equals("")) {
+            World world = event.getWorld();
+            ModWorldSavedData modWorldSavedData = (ModWorldSavedData) world.getPerWorldStorage().getOrLoadData(ModWorldSavedData.class, cupboard_dataIdentifier);
+
+            if (modWorldSavedData == null) {
+                modWorldSavedData = new ModWorldSavedData(cupboard_dataIdentifier);
             }
 
-            for (int q=0; q<blacklistedItems.size(); q++){
-                if (event.getItemStack().getItem() == blacklistedItems.get(q)){
-                    targetName = event.getItemStack().getDisplayName();
-                    break;
-                }
-            }
+            for (int i = 0; i < modWorldSavedData.ToolCupboards.size(); i++) {
+                BlockPos currentPosition = modWorldSavedData.ToolCupboards.get(i);
+                if (event.getPos().getDistance(currentPosition.getX(), currentPosition.getY(), currentPosition.getZ()) < 16) {
+                    TileEntity cupboardEntity = world.getTileEntity(currentPosition);
 
-            if (!targetName.equals("")){
-                World world = event.getWorld();
-                ModWorldSavedData modWorldSavedData = (ModWorldSavedData) world.getPerWorldStorage().getOrLoadData(ModWorldSavedData.class, cupboard_dataIdentifier);
-
-                if (modWorldSavedData == null) {
-                    modWorldSavedData = new ModWorldSavedData(cupboard_dataIdentifier);
-                }
-
-                for (int i=0; i < modWorldSavedData.ToolCupboards.size(); i ++){
-                    BlockPos currentPosition = modWorldSavedData.ToolCupboards.get(i);
-                    if (event.getPos().getDistance(currentPosition.getX(), currentPosition.getY(), currentPosition.getZ()) < 16){
-                        TileEntity cupboardEntity = world.getTileEntity(currentPosition);
-
-                        if (cupboardEntity instanceof TileEntityToolCupboard){
-                            if (!((TileEntityToolCupboard) cupboardEntity).checkAuthorized(event.getEntityPlayer().getName()) ){
-                                event.setCanceled(true);
-                                event.getEntityPlayer().addChatMessage(new TextComponentString("You are not authorized to use " + targetName));
-                            }
+                    if (cupboardEntity instanceof TileEntityToolCupboard) {
+                        if (!((TileEntityToolCupboard) cupboardEntity).checkAuthorized(event.getEntityPlayer().getName())) {
+                            event.setCanceled(true);
+                            event.getEntityPlayer().addChatMessage(new TextComponentString("You are not authorized to use " + targetName));
                         }
                     }
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onHurtEvent(LivingHurtEvent event){
+        if (event.getSource() == DamageSource.fall){
+            event.setAmount(event.getAmount()/1.5F);
         }
     }
 }
